@@ -6,11 +6,11 @@ import java.util.Arrays;
  * Object that stores information parsed from strace calls
  */
 public class StraceCall {
-    public final String call;
-    public final String[] args;
-    public final boolean knownReturn;
-    public final int returnValue;        // for strace
-    public final String returnMessage;   // for procmon
+    private String call;
+    private String[] args;
+    private boolean knownReturn;
+    private int returnValue;        // for strace
+    private String returnMessage;   // for procmon
 
     /**
      * Factory method to return a new StraceCall object populated from the given
@@ -54,11 +54,9 @@ public class StraceCall {
     }
 
     private StraceCall(String call, String[] args, int returnValue) {
-        this.call = call;
-        this.args = Arrays.<String>copyOf(args, args.length);
+        this(call, args);
         this.knownReturn = true;
         this.returnValue = returnValue;
-        this.returnMessage = null;
     }
 
     private StraceCall(String call, String[] args) {
@@ -70,8 +68,7 @@ public class StraceCall {
     }
 
     private StraceCall(String call, String[] args, String returnMessage) {
-        this.call = call;
-        this.args = Arrays.<String>copyOf(args, args.length);
+        this(call, args);
         this.knownReturn = true;
         this.returnMessage = returnMessage;
         // put a best approximation of return message into return value
@@ -80,6 +77,22 @@ public class StraceCall {
         } else {
             this.returnValue = -1;
         }
+    }
+
+    public boolean getKnownReturn() {
+        return knownReturn;
+    }
+
+    public int getReturnValue() {
+        return returnValue;
+    }
+
+    public String getRawPath() {
+        return args[0];
+    }
+
+    public String getSecondArg() {
+        return args[1];
     }
 
     @Override

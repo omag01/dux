@@ -152,13 +152,13 @@ public class DuxBuildTracer {
 
             // disregard if return value unknown or indicated failure
             DuxCLI.logger.debug("checking if the call succeeded");
-            if (!c.knownReturn || c.returnValue == -1) {
+            if (!c.getKnownReturn() || c.getReturnValue() == -1) {
                 continue;
             }
 
             // need to get first argument, which is absolute path surrounded in quotes
             DuxCLI.logger.debug("getting rawpath");
-            String rawPath = c.args[0];
+            String rawPath = c.getRawPath();
             DuxCLI.logger.debug("getting path from this rawpath: {}", rawPath);
             String path = rawPath.substring(1, rawPath.length() - 1);
             DuxCLI.logger.debug("got path: {}", path);
@@ -202,7 +202,7 @@ public class DuxBuildTracer {
                 // p is the symbolic link, and now we need to read the actual file.
 
                 DuxCLI.logger.debug("getting rawpath for link target");
-                String rawPathTarget = c.args[1];
+                String rawPathTarget = c.getSecondArg();
                 DuxCLI.logger.debug("getting path from this rawpath: {} for link target", rawPathTarget);
                 String pathTarget = rawPathTarget.substring(1, rawPathTarget.length() - 1);
                 DuxCLI.logger.debug("got path: {} for link target", pathTarget);
